@@ -14,6 +14,7 @@ BuildArch:      noarch
 BuildRequires:  python3-devel
 BuildRequires:  python3dist(python-dateutil) >= 2.7
 BuildRequires:  python3dist(setuptools)
+BuildRequires:  python3dist(pytest)
 
 %description
 FreezeGun: Let your Python tests travel through time FreezeGun is a library
