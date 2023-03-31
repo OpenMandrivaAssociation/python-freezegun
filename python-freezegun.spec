@@ -3,7 +3,7 @@
 
 Name:           python-%{pypi_name}
 Version:        1.0.0
-Release:        1
+Release:        2
 Summary:        Let your Python tests travel through time
 Group:          Development/Python
 License:        Apache 2.0
