@@ -1,20 +1,27 @@
-# Created by pyp2rpm-3.3.5
-%global pypi_name freezegun
+%define module freezegun
+%bcond_without test
 
-Name:           python-%{pypi_name}
-Version:        1.0.0
-Release:        2
-Summary:        Let your Python tests travel through time
-Group:          Development/Python
-License:        Apache 2.0
-URL:            https://github.com/spulec/freezegun
-Source0:        %{pypi_name}-%{version}.tar.gz
-BuildArch:      noarch
+Name:		python-freezegun
+Version:	1.5.1
+Release:	1
+Summary:	Let your Python tests travel through time
+Group:		Development/Python
+License:	Apache-2.0
+URL:		https://github.com/spulec/freezegun
+Source0:	https://files.pythonhosted.org/packages/source/f/freezegun/%{module}-%{version}.tar.gz
+# patch for python 3.13 datetimes test also fixes asserts in 3.11
+# see for more:  https://github.com/spulec/freezegun/pull/550
+Patch0:		freezegun-1.5.1-py13-datetimes-fix.patch
+BuildArch:	noarch
 
-BuildRequires:  python3-devel
-BuildRequires:  python3dist(python-dateutil) >= 2.7
-BuildRequires:  python3dist(setuptools)
-BuildRequires:  python3dist(pytest)
+BuildRequires:	python
+BuildRequires:	pkgconfig(python3)
+BuildRequires:	python%{pyver}dist(setuptools)
+BuildRequires:	python%{pyver}dist(python-dateutil) >= 2.7
+BuildRequires:	python%{pyver}dist(wheel)
+%if %{with test}
+BuildRequires:	python%{pyver}dist(pytest)
+%endif
 
 %description
 FreezeGun: Let your Python tests travel through time FreezeGun is a library
@@ -25,9 +32,9 @@ time.time(), time.localtime(), time.gmtime(), and time.strftime() will return
 the...
 
 %prep
-%autosetup -n %{pypi_name}-%{version}
+%autosetup -n %{module}-%{version} -p1
 # Remove bundled egg-info
-rm -rf %{pypi_name}.egg-info
+rm -rf %{module}.egg-info
 
 %build
 %py3_build
@@ -35,11 +42,13 @@ rm -rf %{pypi_name}.egg-info
 %install
 %py3_install
 
+%if %{with test}
 %check
-%{__python3} setup.py test
+pytest -v tests/
+%endif
 
-%files -n python-%{pypi_name}
+%files
+%{python3_sitelib}/%{module}
+%{python3_sitelib}/%{module}-%{version}.dist-info
 %license LICENSE
 %doc README.rst
-%{python3_sitelib}/%{pypi_name}
-%{python3_sitelib}/%{pypi_name}-%{version}-py%{python3_version}.egg-info
