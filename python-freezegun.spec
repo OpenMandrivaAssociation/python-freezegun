@@ -3,7 +3,7 @@
 
 Name:		python-freezegun
 Version:	1.5.1
-Release:	1
+Release:	2
 Summary:	Let your Python tests travel through time
 Group:		Development/Python
 License:	Apache-2.0
