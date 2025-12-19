@@ -1,21 +1,20 @@
 %define module freezegun
-%bcond_without test
+%bcond test 1
 
 Name:		python-freezegun
-Version:	1.5.1
-Release:	2
+Version:	1.5.5
+Release:	1
 Summary:	Let your Python tests travel through time
 Group:		Development/Python
 License:	Apache-2.0
 URL:		https://github.com/spulec/freezegun
-Source0:	https://files.pythonhosted.org/packages/source/f/freezegun/%{module}-%{version}.tar.gz
-# patch for python 3.13 datetimes test also fixes asserts in 3.11
-# see for more:  https://github.com/spulec/freezegun/pull/550
-Patch0:		freezegun-1.5.1-py13-datetimes-fix.patch
+Source0:	https://files.pythonhosted.org/packages/source/f/%{module}/%{module}-%{version}.tar.gz
+BuildSystem:	python
 BuildArch:	noarch
 
 BuildRequires:	python
-BuildRequires:	pkgconfig(python3)
+BuildRequires:	pkgconfig(python)
+BuildRequires:	python%{pyver}dist(pip)
 BuildRequires:	python%{pyver}dist(setuptools)
 BuildRequires:	python%{pyver}dist(python-dateutil) >= 2.7
 BuildRequires:	python%{pyver}dist(wheel)
@@ -37,18 +36,20 @@ the...
 rm -rf %{module}.egg-info
 
 %build
-%py3_build
+%py_build
 
 %install
-%py3_install
+%py_install
 
 %if %{with test}
 %check
+export CI=true
+export PYTHONPATH="%{buildroot}%{python_sitearch}:${PWD}"
 pytest -v tests/
 %endif
 
 %files
-%{python3_sitelib}/%{module}
-%{python3_sitelib}/%{module}-%{version}.dist-info
+%{python_sitelib}/%{module}
+%{python_sitelib}/%{module}-%{version}.dist-info
 %license LICENSE
 %doc README.rst
