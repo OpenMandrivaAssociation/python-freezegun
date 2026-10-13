@@ -3,7 +3,7 @@
 
 Name:		python-freezegun
 Version:	1.5.5
-Release:	1
+Release:	2
 Summary:	Let your Python tests travel through time
 Group:		Development/Python
 License:	Apache-2.0
@@ -13,7 +13,7 @@ BuildSystem:	python
 BuildArch:	noarch
 
 BuildRequires:	python
-BuildRequires:	pkgconfig(python)
+BuildRequires:	pkgconfig(python3)
 BuildRequires:	python%{pyver}dist(pip)
 BuildRequires:	python%{pyver}dist(setuptools)
 BuildRequires:	python%{pyver}dist(python-dateutil) >= 2.7
